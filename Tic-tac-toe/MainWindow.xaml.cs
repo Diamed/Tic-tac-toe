@@ -1,25 +1,33 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+using Tic_tac_toe.Model;
+using Tic_tac_toe.ViewModel;
 
 namespace Tic_tac_toe
 {
     public partial class MainWindow : Window
     {
+        private ApplicationModel Model { get; set; } = new ApplicationModel();
         public MainWindow()
         {
             InitializeComponent();
+            DataContext = new ApplicationModel();
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            Button button = (Button)sender;
+            if (Model.SetField(button.CommandParameter.ToString()))
+            {
+                button.Content = Model.Marker;
+                if (Model.IsFinish())
+                {
+                    MessageBox.Show($"Победил игрок №{Model.Step + 1}");
+                    Application.Current.Shutdown(0);
+                }
+                Model.NextStep();
+                LblStep.Content = $"Ход игрока №{Model.Step + 1}";
+            }
         }
     }
 }
