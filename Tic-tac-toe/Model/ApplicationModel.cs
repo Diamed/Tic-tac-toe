@@ -2,11 +2,11 @@
 {
     public sealed class ApplicationModel
     {
-        private static string[,] Field;
+        private string[,] Field;
         public int Step { get; private set; } = 0;
         public string Marker => Step == 0 ? "X" : "O";
 
-        static ApplicationModel()
+        public ApplicationModel()
         {
             Field = new string[3, 3];
             for (int row = 0; row < 3; row++)
@@ -16,6 +16,11 @@
                     Field[row, column] = null;
                 }
             }
+        }
+
+        public ApplicationModel NewGame()
+        {
+            return new ApplicationModel();
         }
 
         public void NextStep()
@@ -41,6 +46,7 @@
                 Field[row, column] = Step.ToString();
                 return true;
             }
+
             return false;
         }
 
@@ -109,6 +115,23 @@
             }
 
             return false;
+        }
+
+        public bool IsDraw()
+        {
+            int drawCount = 0;
+            for (int row = 0; row < 3; row++)
+            {
+                for (int column = 0; column < 3; column++)
+                {
+                    if (Field[row, column] != null)
+                    {
+                        drawCount++;
+                    }
+                }
+            }
+
+            return drawCount == 9;
         }
     }
 }

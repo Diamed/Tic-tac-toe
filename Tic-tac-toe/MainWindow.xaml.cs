@@ -23,11 +23,34 @@ namespace Tic_tac_toe
                 if (Model.IsFinish())
                 {
                     MessageBox.Show($"Победил игрок №{Model.Step + 1}");
-                    Application.Current.Shutdown(0);
+                    Model = Model.NewGame();
+                    ClearButtons();
                 }
-                Model.NextStep();
-                LblStep.Content = $"Ход игрока №{Model.Step + 1}";
+                else if (Model.IsDraw())
+                {
+                    MessageBox.Show($"Ничья!");
+                    Model = Model.NewGame();
+                    ClearButtons();
+                }
+                else
+                {
+                    Model.NextStep();
+                    LblStep.Content = $"Ход игрока №{Model.Step + 1}";
+                }
             }
+        }
+
+        private void ClearButtons()
+        {
+            Field0.Content = null;
+            Field1.Content = null;
+            Field2.Content = null;
+            Field3.Content = null;
+            Field4.Content = null;
+            Field5.Content = null;
+            Field6.Content = null;
+            Field7.Content = null;
+            Field8.Content = null;
         }
     }
 }
